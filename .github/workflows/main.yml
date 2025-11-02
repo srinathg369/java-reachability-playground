@@ -1,11 +1,48 @@
-name: Example workflow for Maven using Snyk 1
-on: push
+# name: Example workflow for Maven using Snyk 1
+# on: push
+# jobs:
+#   security:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - uses: actions/checkout@master
+#       - name: Run Snyk to check for vulnerabilities
+#         uses: snyk/actions/maven@master
+#         env:
+#           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+name: Maven Security Scan with Snyk
+
+on:
+  push:
+
 jobs:
   security:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@master
-      - name: Run Snyk to check for vulnerabilities
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Step 1: Run Snyk test and save report
+      - name: Run Snyk test
         uses: snyk/actions/maven@master
+        continue-on-error: true
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          args: test --json > snyk-report.json
+
+      # Step 2: Upload report as artifact
+      - name: Upload Snyk report
+        uses: actions/upload-artifact@v3
+        with:
+          name: snyk-security-report
+          path: snyk-report.json
+
+      # Step 3: Monitor project in Snyk dashboard
+      - name: Upload project to Snyk dashboard
+        uses: snyk/actions/maven@master
+        continue-on-error: true
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          args: monitor --org=srinathg369
+
