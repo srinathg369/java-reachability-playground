@@ -1,44 +1,45 @@
-# name: Example workflow for Maven using Snyk 1
-# on: push
-# jobs:
-#   security:
-#     runs-on: ubuntu-latest
-#     steps:
-#       - uses: actions/checkout@master
-#       - name: Run Snyk to check for vulnerabilities
-#         uses: snyk/actions/maven@master
-#         env:
-#           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-name: Maven Security Scan with Snyk
-
-on:
-  push:
-
+name: Example workflow for Maven using Snyk 1
+on: push
 jobs:
   security:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Run Snyk test
+      - uses: actions/checkout@main
+      - name: Run Snyk to check for vulnerabilities
         uses: snyk/actions/maven@master
-        continue-on-error: true
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-        with:
-          args: test --json > snyk-report.json
 
-      - name: Upload Snyk report
-        uses: actions/upload-artifact@v4   # ✅ Updated to v4
-        with:
-          name: snyk-security-report
-          path: snyk-report.json
+# name: Maven Security Scan with Snyk
 
-      - name: Upload project to Snyk dashboard
-        uses: snyk/actions/maven@master
-        continue-on-error: true
-        env:
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-        with:
-          args: monitor --org=srinathg369
+# on:
+#   push:
+
+# jobs:
+#   security:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Checkout code
+#         uses: actions/checkout@v3
+
+#       - name: Run Snyk test
+#         uses: snyk/actions/maven@master
+#         continue-on-error: true
+#         env:
+#           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+#         with:
+#           args: test --json > snyk-report.json
+
+#       - name: Upload Snyk report
+#         uses: actions/upload-artifact@v4   # ✅ Updated to v4
+#         with:
+#           name: snyk-security-report
+#           path: snyk-report.json
+
+#       - name: Upload project to Snyk dashboard
+#         uses: snyk/actions/maven@master
+#         continue-on-error: true
+#         env:
+#           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+#         with:
+#           args: monitor --org=srinathg369
