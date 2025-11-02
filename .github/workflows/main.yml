@@ -21,7 +21,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # Step 1: Run Snyk test and save report
       - name: Run Snyk test
         uses: snyk/actions/maven@master
         continue-on-error: true
@@ -30,14 +29,12 @@ jobs:
         with:
           args: test --json > snyk-report.json
 
-      # Step 2: Upload report as artifact
       - name: Upload Snyk report
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4   # ✅ Updated to v4
         with:
           name: snyk-security-report
           path: snyk-report.json
 
-      # Step 3: Monitor project in Snyk dashboard
       - name: Upload project to Snyk dashboard
         uses: snyk/actions/maven@master
         continue-on-error: true
@@ -45,4 +42,3 @@ jobs:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
           args: monitor --org=srinathg369
-
