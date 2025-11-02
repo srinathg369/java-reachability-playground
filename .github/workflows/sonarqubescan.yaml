@@ -17,7 +17,7 @@ jobs:
 
       - name: Build and Analyze with SonarCloud
         run: mvn -B verify sonar:sonar \
-          -Dsonar.projectKey=java-reachability-playground \
+          -Dsonar.projectKey=srinathg369_srinathg369 \
           -Dsonar.organization=srinathg369 \
           -Dsonar.host.url=https://sonarcloud.io \
           -Dsonar.login=${{ secrets.SONAR_TOKEN }}
